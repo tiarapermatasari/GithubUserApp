@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#49BEFF</color>
+    <color name="colorPrimaryDark">#65DCE5</color>
+    <color name="colorAccent">#0D5D98</color>
+    <color name="address">#2F7092</color>
+    <color name="followers">#0D5D98</color>
+    <color name="headings">#3797CF</color>
+    <color name="solidCircle">#AAFFFFFF</color>
+    <color name="circleBorder">#50FFFFFF</color>
+    <color name="gradEnd">#67EFC8</color>
+    <color name="gradStart">#63C9FF</color>
+    <color name="followersBg">#65DCE5</color>
+    <color name="followingBg">#49BEFF</color>
+    <color name="grey">#E5E5E5</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="antique_white">#FAEBD7</color>
+    <color name="azure">#F0FFFF</color>
+    <color name="beige">#F5F5DC</color>
+    <color name="bisque">#FFE4C4</color>
+    <color name="lavender">#E6E6FA</color>
+    <color name="lavender_blush">#FFF0F5</color>
+    <color name="lemon_chiffon">#FFFACD</color>
+    <color name="dark_sea_green">#8FBC8F</color>
+    <color name="dark_slate_gray">#2F4F4F</color>
+    <color name="indian_red">#CD5C5C</color>
+    <color name="light_coral">	#F08080</color>
+    <color name="dark_salmon">	#E9967A</color>
+    <color name="light_steel_blue">#B0C4DE</color>
+    <color name="light_slate_gray">#778899</color>
+</resources>
