@@ -25,7 +25,7 @@ class MainViewModel : ViewModel() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) {
                 try {
                     val result = String(responseBody)
-                    Log.d("ViewModel", result.toString())
+                    Log.d("ViewModel", result)
                     val response = JSONObject(result)
                     val items = response.getJSONArray("items")
                     for (i in 0 until items.length()) {

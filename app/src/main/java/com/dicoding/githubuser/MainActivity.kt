@@ -25,12 +25,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        adapter = ListUserAdapter()
+        mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java)
+
         showRecyclerView()
     }
 
     private fun showRecyclerView(){
         val adapter = ListUserAdapter()
         adapter.notifyDataSetChanged()
+
         binding.rvUser.layoutManager = LinearLayoutManager(this)
         binding.rvUser.adapter = adapter
         adapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
@@ -42,24 +47,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setDataToAdapter(){
-        mainViewModel = ViewModelProvider(this,
-            ViewModelProvider.NewInstanceFactory())
-            .get(MainViewModel::class.java)
-
         mainViewModel.getListUser().observe(this, { userItems ->
             if (userItems != null) {
                 adapter.setData(userItems)
                 showLoading(false)
             }
         })
-    }
-
-    private fun showLoading(state: Boolean) {
-        if (state) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -83,17 +76,24 @@ class MainActivity : AppCompatActivity() {
         })
         return true
     }
+
     private fun showSelectedItem(user: User){
         Toast.makeText(this, "Show " + user.name + " profile", Toast.LENGTH_SHORT).show()
         val moveDetail = Intent(this@MainActivity, UserDetailActivity::class.java)
         moveDetail.putExtra(UserDetailActivity.EXTRA_USER,user)
         startActivity(moveDetail)
 
-
         val sectionPagerAdapter = SectionPagerAdapter(this)
         val viewPager: ViewPager2 = findViewById(R.id.view_pager)
         viewPager.adapter = sectionPagerAdapter
+    }
 
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 
 

@@ -25,6 +25,7 @@ class UserDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private lateinit var detailViewModel: DetailViewModel
+    private lateinit var adapter: ListUserAdapter
     private val listUser = ArrayList<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,11 +34,8 @@ class UserDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val user = intent.getParcelableExtra<User>(EXTRA_USER) as User
-
-        detailViewModel = ViewModelProvider(this,
-            ViewModelProvider.NewInstanceFactory()
-        )
-            .get(DetailViewModel::class.java)
+        adapter = ListUserAdapter()
+        detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
         detailViewModel = DetailViewModel()
         detailViewModel.setUserDetail(user.username)
         detailViewModel.getUserDetail().observe(this, {

@@ -26,7 +26,7 @@ class DetailViewModel : ViewModel() {
             override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseBody: ByteArray) {
                 try {
                     val result = String(responseBody)
-                    Log.d("ViewModel", result.toString())
+                    Log.d("ViewModel", result)
                     val response = JSONObject(result)
                     val user = User()
                         user.name = response.getString("name")
@@ -71,7 +71,7 @@ class DetailViewModel : ViewModel() {
                 override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseBody: ByteArray) {
                     try {
                         val result = String(responseBody)
-                        Log.d("ViewModel", result.toString())
+                        Log.d("ViewModel", result)
                         val response = JSONArray(result)
                         for (i in 0 until response.length()) {
                             val item = response.getJSONObject(i)
@@ -106,7 +106,7 @@ class DetailViewModel : ViewModel() {
             override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseBody: ByteArray) {
                 try {
                     val result = String(responseBody)
-                    Log.d("ViewModel", result.toString())
+                    Log.d("ViewModel", result)
                     val response = JSONArray(result)
                     for (i in 0 until response.length()) {
                         val item = response.getJSONObject(i)
