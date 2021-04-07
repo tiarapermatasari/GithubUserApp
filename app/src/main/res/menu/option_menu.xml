@@ -12,7 +12,7 @@
     <group android:menuCategory="container">
         <item
             android:id="@+id/languages_settings"
-            android:title="@string/languages" />
+            android:title="@string/languages"/>
     </group>
 
 </menu>

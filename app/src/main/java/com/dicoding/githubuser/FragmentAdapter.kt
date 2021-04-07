@@ -1,16 +1,13 @@
 package com.dicoding.githubuser
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.dicoding.githubuser.databinding.ItemRowUserBinding
 
-class FragmentAdapter(): RecyclerView.Adapter<FragmentAdapter.ListViewHolder>() {
+class FragmentAdapter : RecyclerView.Adapter<FragmentAdapter.ListViewHolder>() {
 
     private val listUser = ArrayList<User>()
     private lateinit var onItemClickCallback1: OnItemClickCallback
@@ -21,34 +18,26 @@ class FragmentAdapter(): RecyclerView.Adapter<FragmentAdapter.ListViewHolder>() 
         notifyDataSetChanged()
     }
 
-    inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-
-        val btnFavorite: ImageView = itemView.findViewById(R.id.btn_love)
-        val btnShare: ImageView = itemView.findViewById(R.id.btn_share)
-        var txtName: TextView = itemView.findViewById(R.id.txt_name)
-        var txtUsername: TextView = itemView.findViewById(R.id.txt_user_name)
-        var imgAvatar: ImageView = itemView.findViewById(R.id.img_avatar)
+    inner class ListViewHolder(private val binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(userItems: User) {
+            with(binding) {
+                Glide.with(itemView.context)
+                    .load(userItems.avatar)
+                    .apply(RequestOptions().override(55,55))
+                    .into(imgAvatar)
+                binding.txtName.text = userItems.name
+            }
+        }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ListViewHolder {
-        val view: View = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_user, viewGroup, false)
+        val view = ItemRowUserBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val userItems = listUser[position]
-        Glide.with(holder.itemView.context)
-            .load(userItems.avatar)
-            .apply(RequestOptions().override(55,55))
-            .into(holder.imgAvatar)
-        holder.txtName.text = userItems.name
-        holder.txtUsername.text = userItems.username
-
-        holder.btnFavorite.setOnClickListener{
-            Toast.makeText(holder.itemView.context, "Added to favorite", Toast.LENGTH_SHORT).show()
-        }
-        holder.btnShare.setOnClickListener{
-            Toast.makeText(holder.itemView.context, "Share", Toast.LENGTH_SHORT).show()
+        holder.bind(listUser[position])
+        holder.itemView.setOnClickListener{ onItemClickCallback1.onItemClicked(listUser[holder.adapterPosition])
         }
     }
     override fun getItemCount(): Int = listUser.size

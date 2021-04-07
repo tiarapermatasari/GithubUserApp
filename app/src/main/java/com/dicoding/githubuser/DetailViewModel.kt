@@ -7,25 +7,23 @@ import androidx.lifecycle.ViewModel
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
-import org.json.JSONArray
 import org.json.JSONObject
 
 class DetailViewModel : ViewModel() {
 
-    private val userDetail = MutableLiveData<ArrayList<User>>()
+    private val userDetail = MutableLiveData<User>()
     private val followersDetail = MutableLiveData<ArrayList<User>>()
     private val followingDetail = MutableLiveData<ArrayList<User>>()
 
     fun setUserDetail(username: String?) {
-        val detailUser = ArrayList<User>()
         val url = "https://api.github.com/users/$username"
         val asyncClient = AsyncHttpClient()
-        asyncClient.addHeader("Authorization", "d57ba3014f40b4e75a07a12d1d4b1037e5f04de2")
+        asyncClient.addHeader("Authorization", "token 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")
         asyncClient.addHeader("User-Agent", "request")
         asyncClient.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseBody: ByteArray) {
+                val result = String(responseBody)
                 try {
-                    val result = String(responseBody)
                     Log.d("ViewModel", result)
                     val response = JSONObject(result)
                     val user = User()
@@ -37,8 +35,7 @@ class DetailViewModel : ViewModel() {
                         user.followers = response.getString("followers")
                         user.following = response.getString("following")
                         user.repository = response.getString("public_repos")
-                        detailUser.add(user)
-                        userDetail.postValue(detailUser)
+                        userDetail.postValue(user)
                 } catch (e: Exception) {
                     Log.d("Exception", e.toString())
                 }
@@ -51,13 +48,13 @@ class DetailViewModel : ViewModel() {
                     404 -> "$statusCode : Not Found"
                     else -> "$statusCode : ${error?.message}"
                 }
-                Log.d("MainViewModel", errorMessage)
+                Log.d("DetailViewModel", errorMessage)
             }
 
         })
     }
 
-    fun getUserDetail(): LiveData<ArrayList<User>> {
+    fun getUserDetail(): LiveData<User> {
         return userDetail
     }
 
@@ -65,19 +62,19 @@ class DetailViewModel : ViewModel() {
         val followersUser = ArrayList<User>()
         val asyncClient = AsyncHttpClient()
         val url = "https://api.github.com/users/$username/followers"
-        asyncClient.addHeader("Authorization", "d57ba3014f40b4e75a07a12d1d4b1037e5f04de2")
+        asyncClient.addHeader("Authorization", "token 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")
         asyncClient.addHeader("User-Agent", "request")
         asyncClient.get(url, object : AsyncHttpResponseHandler() {
                 override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseBody: ByteArray) {
                     try {
                         val result = String(responseBody)
                         Log.d("ViewModel", result)
-                        val response = JSONArray(result)
-                        for (i in 0 until response.length()) {
-                            val item = response.getJSONObject(i)
+                        val response = JSONObject(result)
+                        val items = response.getJSONArray("items")
+                        for (i in 0 until items.length()) {
+                            val item = items.getJSONObject(i)
                             val user = User()
-                                user.name = item.getString("name")
-                                user.username = item.getString("login")
+                                user.name = item.getString("login")
                                 user.avatar = item.getString("avatar_url")
                                 followersUser.add(user)
                             }
@@ -100,19 +97,19 @@ class DetailViewModel : ViewModel() {
         val followingUser = ArrayList<User>()
         val asyncClient = AsyncHttpClient()
         val url = "https://api.github.com/users/$username/following"
-        asyncClient.addHeader("Authorization", "d57ba3014f40b4e75a07a12d1d4b1037e5f04de2")
+        asyncClient.addHeader("Authorization", "token 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")
         asyncClient.addHeader("User-Agent", "request")
         asyncClient.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseBody: ByteArray) {
                 try {
                     val result = String(responseBody)
                     Log.d("ViewModel", result)
-                    val response = JSONArray(result)
-                    for (i in 0 until response.length()) {
-                        val item = response.getJSONObject(i)
+                    val response = JSONObject(result)
+                    val items = response.getJSONArray("items")
+                    for (i in 0 until items.length()) {
+                        val item = items.getJSONObject(i)
                         val user = User()
-                        user.name = item.getString("name")
-                        user.username = item.getString("login")
+                        user.name = item.getString("login")
                         user.avatar = item.getString("avatar_url")
                         followingUser.add(user)
                     }

@@ -10,11 +10,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.githubuser.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.item_row_user.*
 
 class UserDetailActivity : AppCompatActivity() {
 
     companion object {
-
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.fragment_1,
@@ -25,62 +25,58 @@ class UserDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private lateinit var detailViewModel: DetailViewModel
-    private lateinit var adapter: ListUserAdapter
-    private val listUser = ArrayList<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val user = intent.getParcelableExtra<User>(EXTRA_USER) as User
-        adapter = ListUserAdapter()
         detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
         detailViewModel = DetailViewModel()
-        detailViewModel.setUserDetail(user.username)
-        detailViewModel.getUserDetail().observe(this, {
+
+        setData()
+
+
+    }
+
+    private fun setData(){
+        val user = intent.getParcelableExtra<User>(EXTRA_USER) as User
+        detailViewModel.setUserDetail(user.name)
+        detailViewModel.getUserDetail().observe(this,{
             binding.apply {
                 Glide.with(this@UserDetailActivity)
-                    .load(user.avatar)
+                    .load(it.avatar)
                     .apply(RequestOptions().override(55, 55))
                     .into(imgAvatar)
-                txtName.text = user.name
-                txtUserName.text = user.username
-                txtCompany.text = user.company
-                txtLocation.text = user.location
-                txtFollowers.text = user.followers
-                txtFollowing.text = user.following
-                txtRepository.text = user.repository
+                txtName.text = it.name
+                txtUserName.text = it.username
+                txtCompany.text = it.company
+                txtLocation.text = it.location
+                txtFollowers.text = it.followers
+                txtFollowing.text = it.following
+                txtRepository.text = it.repository
+
             }
         })
+        initTabLayout(userName = String())
 
-        val sectionPagerAdapter = SectionPagerAdapter(this)
+        user.name?.let {
+            initTabLayout(it)
+            detailViewModel.setUserDetail(it)
+        }
+    }
+
+    private fun initTabLayout(userName: String) {
+
+        val pagerAdapter = SectionPagerAdapter(this)
+        pagerAdapter.username = userName
         val viewPager: ViewPager2 = findViewById(R.id.view_pager)
-        viewPager.adapter = sectionPagerAdapter
-
+        viewPager.adapter = pagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
-
         supportActionBar?.elevation = 0f
-    }
-
-    private fun setData(items: ArrayList<User>) {
-        listUser.clear()
-        listUser.addAll(items)
-    }
-
-    private fun bind(userItems: User) {
-        with(binding) {
-            Glide.with(this.root)
-                .load(userItems.avatar)
-                .apply(RequestOptions().override(55, 55))
-                .into(imgAvatar)
-            binding.txtName.text = userItems.name
-            binding.txtUserName.text = userItems.username
-            binding.txtCompany.text = userItems.company
-        }
     }
 }
 

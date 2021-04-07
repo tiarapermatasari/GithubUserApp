@@ -2,6 +2,7 @@ package com.dicoding.githubuser
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,51 +14,38 @@ import com.dicoding.githubuser.databinding.FragmentFollowersBinding
 
 class FollowersFragment : Fragment() {
 
-    companion object {
-        private val ARG_USERNAME = "username"
-
-        fun newInstance(username: String?): Fragment {
-            val fragment = FollowersFragment()
-            val bundle = Bundle()
-            bundle.putString(ARG_USERNAME, username)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
-
-    private lateinit var binding : FragmentFollowersBinding
+    private lateinit var binding: FragmentFollowersBinding
+    private lateinit var adapter: FragmentAdapter
     private lateinit var detailViewModel: DetailViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentFollowersBinding.inflate(inflater, container, false)
 
-        val argument = arguments?.getString(ARG_USERNAME)
-        val view: View? = binding.root
-        binding = FragmentFollowersBinding.inflate(layoutInflater)
-
-
-        binding.rvFollowers.setHasFixedSize(true)
-        detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
-        detailViewModel.setFollowers(argument)
-
-        showLoading(true)
-        showRecyclerView()
-        return view
-    }
-
-    private fun showRecyclerView(){
-        val adapter = FragmentAdapter()
-        binding.rvFollowers.layoutManager = LinearLayoutManager(activity)
+        adapter = FragmentAdapter()
         adapter.notifyDataSetChanged()
+
+        binding.rvFollowers.layoutManager = LinearLayoutManager(activity)
         binding.rvFollowers.adapter = adapter
 
-        detailViewModel.getFollowers().observe(viewLifecycleOwner) { userItems ->
-            if (userItems != null) {
-                showLoading(false)
-                adapter.setData(userItems)
-            }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val user = arguments?.getString(ARG_USERNAME)
+
+        showLoading(true)
+        detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
+        if (user != null) {
+            detailViewModel.setFollowers(user)
         }
-        adapter.setOnItemClickCallback(object: FragmentAdapter.OnItemClickCallback{
+
+        detailViewModel.getFollowers().observe(viewLifecycleOwner) {
+            adapter.setData(it)
+            showLoading(false)
+
+        }
+        adapter.setOnItemClickCallback(object : FragmentAdapter.OnItemClickCallback {
             override fun onItemClicked(data: User) {
                 val intent = Intent(activity, UserDetailActivity::class.java)
                 intent.putExtra(UserDetailActivity.EXTRA_USER, data)
@@ -66,14 +54,30 @@ class FollowersFragment : Fragment() {
         })
     }
 
-    private fun showLoading(condition: Boolean) {
-        if(condition) {
+    companion object {
+        private const val ARG_USERNAME = "username"
+
+        @JvmStatic
+        fun newInstance(username: String) =
+            FollowersFragment().apply {
+                FollowersFragment().apply {
+                    val fragment = FollowingFragment()
+                    val bundle = Bundle()
+                    bundle.putString(ARG_USERNAME, username)
+                    fragment.arguments = bundle
+                }
+                }
+            }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
             binding.progressBarFollowersFragment.visibility = View.VISIBLE
-        }else {
+        } else {
             binding.progressBarFollowersFragment.visibility = View.GONE
         }
     }
-
 }
+
+
 
 
