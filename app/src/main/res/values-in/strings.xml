@@ -15,4 +15,14 @@
     <string name="fragment_2">Mengikuti</string>
     <string name="languages">Ubah Bahasa</string>
     <string name="search_user">Cari</string>
+    <string name="favorite">Favorit</string>
+    <string name="title_menu_favorite">Favorit</string>
+    <string name="Alarm">Alarm</string>
+    <string name="toast_repeat_alarm">Alarm dinyalakan</string>
+    <string name="toast_repeat_alarm_cancel">Alarm dibatalkan</string>
+    <string name="type_set_repeating_alarm">Alarm berulang</string>
+    <string name="time_alarm">09:00</string>
+    <string name="massage_alarm">Tetap Semangat</string>
+    <string name="on">Hidup</string>
+    <string name="off">Mati</string>
 </resources>

@@ -2,14 +2,16 @@ package com.dicoding.githubuser
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.githubuser.adapter.FragmentAdapter
+import com.dicoding.githubuser.data.User
 import com.dicoding.githubuser.databinding.FragmentFollowersBinding
+import com.dicoding.githubuser.viewmodel.DetailViewModel
 
 
 class FollowersFragment : Fragment() {
@@ -35,7 +37,8 @@ class FollowersFragment : Fragment() {
         val user = arguments?.getString(ARG_USERNAME)
 
         showLoading(true)
-        detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
+        detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
+            DetailViewModel::class.java)
         if (user != null) {
             detailViewModel.setFollowers(user)
         }
@@ -43,7 +46,6 @@ class FollowersFragment : Fragment() {
         detailViewModel.getFollowers().observe(viewLifecycleOwner) {
             adapter.setData(it)
             showLoading(false)
-
         }
         adapter.setOnItemClickCallback(object : FragmentAdapter.OnItemClickCallback {
             override fun onItemClicked(data: User) {
@@ -60,12 +62,9 @@ class FollowersFragment : Fragment() {
         @JvmStatic
         fun newInstance(username: String) =
             FollowersFragment().apply {
-                FollowersFragment().apply {
-                    val fragment = FollowingFragment()
-                    val bundle = Bundle()
-                    bundle.putString(ARG_USERNAME, username)
-                    fragment.arguments = bundle
-                }
+                    arguments = Bundle().apply {
+                        putString(ARG_USERNAME, username)
+                    }
                 }
             }
 

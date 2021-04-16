@@ -1,9 +1,10 @@
-package com.dicoding.githubuser
+package com.dicoding.githubuser.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dicoding.githubuser.data.User
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
@@ -19,7 +20,7 @@ class MainViewModel : ViewModel() {
         val listUser = ArrayList<User>()
         val asyncClient = AsyncHttpClient()
         val url = "https://api.github.com/search/users?q=$username"
-        asyncClient.addHeader("Authorization", "token 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")
+        asyncClient.addHeader("Authorization", "token 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")
         asyncClient.addHeader("User-Agent", "request")
         asyncClient.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) {

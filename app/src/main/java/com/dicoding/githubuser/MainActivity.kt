@@ -5,12 +5,18 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.githubuser.adapter.ListUserAdapter
+import com.dicoding.githubuser.data.User
 import com.dicoding.githubuser.databinding.ActivityMainBinding
+import com.dicoding.githubuser.viewmodel.DetailViewModel
+import com.dicoding.githubuser.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,8 +30,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        showLoading(false)
 
-        mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
+            MainViewModel::class.java)
         showRecyclerView()
     }
 
@@ -47,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getListUser().observe(this, { userItems ->
             if (userItems != null) {
                 adapter.setData(userItems)
+                showLoading(false)
             }
         })
     }
@@ -69,8 +78,21 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
-        showLoading(false)
+
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.favorite -> {
+                startActivity(Intent(this, FavoriteActivity::class.java))
+            }
+            R.id.action_set_alarm -> {
+                startActivity(Intent(this, SettingActivity::class.java))
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun showSelectedItem(data: User){

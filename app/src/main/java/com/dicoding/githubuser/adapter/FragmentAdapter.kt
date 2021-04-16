@@ -1,16 +1,17 @@
-package com.dicoding.githubuser
+package com.dicoding.githubuser.adapter
 
-import android.view.ViewGroup
-import com.bumptech.glide.Glide
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.dicoding.githubuser.data.User
 import com.dicoding.githubuser.databinding.ItemRowUserBinding
 
-class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class FragmentAdapter : RecyclerView.Adapter<FragmentAdapter.ListViewHolder>() {
 
-    private var listUser = ArrayList<User>()
-    private lateinit var onItemClickCallback: OnItemClickCallback
+    private val listUser = ArrayList<User>()
+    private lateinit var onItemClickCallback1: OnItemClickCallback
 
     fun setData(items: ArrayList<User>) {
         listUser.clear()
@@ -37,16 +38,16 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         holder.bind(listUser[position])
-        holder.itemView.setOnClickListener{ onItemClickCallback.onItemClicked(listUser[holder.adapterPosition])
+        holder.itemView.setOnClickListener{ onItemClickCallback1.onItemClicked(listUser[holder.adapterPosition])
         }
     }
-
     override fun getItemCount(): Int = listUser.size
 
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
-    }
     interface OnItemClickCallback {
         fun onItemClicked(data: User)
     }
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback1 = onItemClickCallback
+    }
+
 }

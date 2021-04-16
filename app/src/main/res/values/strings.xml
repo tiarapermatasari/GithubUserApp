@@ -15,4 +15,14 @@
     <string name="fragment_2">Following</string>
     <string name="languages">Change Language</string>
     <string name="search_user">Search Github</string>
+    <string name="favorite">Favorite</string>
+    <string name="title_menu_favorite">Favorite</string>
+    <string name="Alarm">Alarm</string>
+    <string name="toast_repeat_alarm">Repeating alarm set up</string>
+    <string name="toast_repeat_alarm_cancel">Repeating alarm is canceled</string>
+    <string name="type_set_repeating_alarm">Repeating Alarm</string>
+    <string name="time_alarm">09:00</string>
+    <string name="massage_alarm">Keep the spirit</string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
 </resources>

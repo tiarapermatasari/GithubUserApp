@@ -11,8 +11,11 @@
         android:roundIcon="@mipmap/github"
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubUser">
-        <activity android:name=".UserDetailActivity"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".MainActivity2" />
+        <activity android:name=".FavoriteActivity" />
+        <activity android:name=".UserDetailActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

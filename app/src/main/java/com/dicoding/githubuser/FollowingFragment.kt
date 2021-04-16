@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.githubuser.adapter.FragmentAdapter
+import com.dicoding.githubuser.data.User
 import com.dicoding.githubuser.databinding.FragmentFollowingBinding
+import com.dicoding.githubuser.viewmodel.DetailViewModel
 
 
 class FollowingFragment : Fragment() {
@@ -34,7 +37,8 @@ class FollowingFragment : Fragment() {
         val user = arguments?.getString(ARG_USERNAME)
 
         showLoading(true)
-        detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
+        detailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
+            DetailViewModel::class.java)
         if (user != null) {
             detailViewModel.setFollowing(user)
         }
@@ -58,7 +62,7 @@ class FollowingFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(username: String) =
-            FollowersFragment().apply {
+            FollowingFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_USERNAME, username)
                 }

@@ -10,10 +10,10 @@
 
     <ImageView
         android:id="@+id/splashscreenlogo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/github"
+        android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
